@@ -1,0 +1,333 @@
+
+AVR_Kit_Test.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000017c  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000001  00800060  00800060  000001f0  2**0
+                  ALLOC
+  2 .comment      00000030  00000000  00000000  000001f0  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 00000120  00000000  00000000  00000220  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   00000fce  00000000  00000000  00000340  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 0000031f  00000000  00000000  0000130e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   000005fa  00000000  00000000  0000162d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  000002e4  00000000  00000000  00001c28  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    0000041d  00000000  00000000  00001f0c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    00000c2b  00000000  00000000  00002329  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000110  00000000  00000000  00002f54  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+   8:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+   c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  10:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  14:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  18:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  1c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  20:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  24:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  28:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  2c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  30:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  34:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  38:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  3c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  40:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  44:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  48:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  4c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  50:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  54:	5e 00       	.word	0x005e	; ????
+  56:	60 00       	.word	0x0060	; ????
+  58:	62 00       	.word	0x0062	; ????
+  5a:	64 00       	.word	0x0064	; ????
+  5c:	66 00       	.word	0x0066	; ????
+  5e:	68 00       	.word	0x0068	; ????
+  60:	6a 00       	.word	0x006a	; ????
+  62:	6c 00       	.word	0x006c	; ????
+  64:	6f 00       	.word	0x006f	; ????
+  66:	6e 00       	.word	0x006e	; ????
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf e5       	ldi	r28, 0x5F	; 95
+  6e:	d4 e0       	ldi	r29, 0x04	; 4
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+
+00000074 <__do_copy_data>:
+  74:	10 e0       	ldi	r17, 0x00	; 0
+  76:	a0 e6       	ldi	r26, 0x60	; 96
+  78:	b0 e0       	ldi	r27, 0x00	; 0
+  7a:	ec e7       	ldi	r30, 0x7C	; 124
+  7c:	f1 e0       	ldi	r31, 0x01	; 1
+  7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
+  80:	05 90       	lpm	r0, Z+
+  82:	0d 92       	st	X+, r0
+  84:	a0 36       	cpi	r26, 0x60	; 96
+  86:	b1 07       	cpc	r27, r17
+  88:	d9 f7       	brne	.-10     	; 0x80 <__do_copy_data+0xc>
+
+0000008a <__do_clear_bss>:
+  8a:	20 e0       	ldi	r18, 0x00	; 0
+  8c:	a0 e6       	ldi	r26, 0x60	; 96
+  8e:	b0 e0       	ldi	r27, 0x00	; 0
+  90:	01 c0       	rjmp	.+2      	; 0x94 <.do_clear_bss_start>
+
+00000092 <.do_clear_bss_loop>:
+  92:	1d 92       	st	X+, r1
+
+00000094 <.do_clear_bss_start>:
+  94:	a1 36       	cpi	r26, 0x61	; 97
+  96:	b2 07       	cpc	r27, r18
+  98:	e1 f7       	brne	.-8      	; 0x92 <.do_clear_bss_loop>
+  9a:	0e 94 b4 00 	call	0x168	; 0x168 <main>
+  9e:	0c 94 bc 00 	jmp	0x178	; 0x178 <_exit>
+
+000000a2 <__bad_interrupt>:
+  a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000a6 <LED7_OUT>:
+	}
+	for(i=lcd4_length;i>0;i--)
+	{
+		LCD4_OUT_DATA(lcd4_temp[i-1]);
+	}
+}
+  a6:	25 b3       	in	r18, 0x15	; 21
+  a8:	28 70       	andi	r18, 0x08	; 8
+  aa:	90 e0       	ldi	r25, 0x00	; 0
+  ac:	8a 30       	cpi	r24, 0x0A	; 10
+  ae:	91 05       	cpc	r25, r1
+  b0:	b0 f4       	brcc	.+44     	; 0xde <LED7_OUT+0x38>
+}
+void LED7_OUT(uint8_t num)
+{
+	uint8_t temp = PORTC;
+	temp &= 0B00001000;
+	switch(num)
+  b2:	fc 01       	movw	r30, r24
+  b4:	e6 5d       	subi	r30, 0xD6	; 214
+  b6:	ff 4f       	sbci	r31, 0xFF	; 255
+  b8:	0c 94 b6 00 	jmp	0x16c	; 0x16c <__tablejump2__>
+	{
+		case 0: temp |= 0B10000000; break;
+  bc:	20 68       	ori	r18, 0x80	; 128
+  be:	0f c0       	rjmp	.+30     	; 0xde <LED7_OUT+0x38>
+		case 1: temp |= 0B11100011; break;
+  c0:	23 6e       	ori	r18, 0xE3	; 227
+  c2:	0d c0       	rjmp	.+26     	; 0xde <LED7_OUT+0x38>
+		case 2: temp |= 0B01000100; break;
+  c4:	24 64       	ori	r18, 0x44	; 68
+  c6:	0b c0       	rjmp	.+22     	; 0xde <LED7_OUT+0x38>
+		case 3: temp |= 0B01000001; break;
+  c8:	21 64       	ori	r18, 0x41	; 65
+  ca:	09 c0       	rjmp	.+18     	; 0xde <LED7_OUT+0x38>
+		case 4: temp |= 0B00100011; break;
+  cc:	23 62       	ori	r18, 0x23	; 35
+  ce:	07 c0       	rjmp	.+14     	; 0xde <LED7_OUT+0x38>
+		case 5: temp |= 0B00010001; break;
+  d0:	21 61       	ori	r18, 0x11	; 17
+  d2:	05 c0       	rjmp	.+10     	; 0xde <LED7_OUT+0x38>
+		case 6: temp |= 0B00010000; break;
+  d4:	20 61       	ori	r18, 0x10	; 16
+  d6:	03 c0       	rjmp	.+6      	; 0xde <LED7_OUT+0x38>
+		case 7: temp |= 0B11000011; break;
+  d8:	23 6c       	ori	r18, 0xC3	; 195
+  da:	01 c0       	rjmp	.+2      	; 0xde <LED7_OUT+0x38>
+		case 8: temp |= 0B00000000; break;
+		case 9: temp |= 0B00000001; break;
+  dc:	21 60       	ori	r18, 0x01	; 1
+	}
+	PORTC = temp;
+  de:	25 bb       	out	0x15, r18	; 21
+  e0:	08 95       	ret
+
+000000e2 <PB_CHECK>:
+		}
+	}
+}
+uint8_t PB_CHECK(push_button)
+{
+	if ((PINB & 0x0F) != 0x0F)
+  e2:	96 b3       	in	r25, 0x16	; 22
+  e4:	9f 70       	andi	r25, 0x0F	; 15
+  e6:	9f 30       	cpi	r25, 0x0F	; 15
+  e8:	81 f0       	breq	.+32     	; 0x10a <PB_CHECK+0x28>
+	{
+		if(!(PINB & (1<<PB0)))
+  ea:	b0 9b       	sbis	0x16, 0	; 22
+  ec:	07 c0       	rjmp	.+14     	; 0xfc <PB_CHECK+0x1a>
+			return 1;
+		
+		if(!(PINB & (1<<PB1)))
+  ee:	b1 9b       	sbis	0x16, 1	; 22
+  f0:	07 c0       	rjmp	.+14     	; 0x100 <PB_CHECK+0x1e>
+			return 2;
+			
+		if(!(PINB & (1<<PB2)))
+  f2:	b2 9b       	sbis	0x16, 2	; 22
+  f4:	07 c0       	rjmp	.+14     	; 0x104 <PB_CHECK+0x22>
+			return 3;
+			
+		if(!(PINB & (1<<PB3)))
+  f6:	b3 9b       	sbis	0x16, 3	; 22
+  f8:	07 c0       	rjmp	.+14     	; 0x108 <PB_CHECK+0x26>
+			return 4;
+	}
+	return push_button;
+  fa:	08 95       	ret
+uint8_t PB_CHECK(push_button)
+{
+	if ((PINB & 0x0F) != 0x0F)
+	{
+		if(!(PINB & (1<<PB0)))
+			return 1;
+  fc:	81 e0       	ldi	r24, 0x01	; 1
+  fe:	08 95       	ret
+		
+		if(!(PINB & (1<<PB1)))
+			return 2;
+ 100:	82 e0       	ldi	r24, 0x02	; 2
+ 102:	08 95       	ret
+			
+		if(!(PINB & (1<<PB2)))
+			return 3;
+ 104:	83 e0       	ldi	r24, 0x03	; 3
+ 106:	08 95       	ret
+			
+		if(!(PINB & (1<<PB3)))
+			return 4;
+ 108:	84 e0       	ldi	r24, 0x04	; 4
+	}
+	return push_button;
+}
+ 10a:	08 95       	ret
+
+0000010c <PB_2_LED>:
+			}
+		}
+}
+void PB_2_LED()
+{
+	DDRD |= 0xFF;
+ 10c:	81 b3       	in	r24, 0x11	; 17
+ 10e:	8f ef       	ldi	r24, 0xFF	; 255
+ 110:	81 bb       	out	0x11, r24	; 17
+	PORTD |= 0xFF;
+ 112:	92 b3       	in	r25, 0x12	; 18
+ 114:	82 bb       	out	0x12, r24	; 18
+	DDRC |= 0xFF;
+ 116:	94 b3       	in	r25, 0x14	; 20
+ 118:	84 bb       	out	0x14, r24	; 20
+	PORTC |= 0xFF;
+ 11a:	95 b3       	in	r25, 0x15	; 21
+ 11c:	85 bb       	out	0x15, r24	; 21
+		push_button = PB_CHECK();
+		LED7_OUT(push_button);
+		switch(push_button)
+		{
+			case 1: PORTD = 0b11111100; break;	
+			case 2: PORTD = 0b11110011; break;	
+ 11e:	0f 2e       	mov	r0, r31
+ 120:	f3 ef       	ldi	r31, 0xF3	; 243
+ 122:	ff 2e       	mov	r15, r31
+ 124:	f0 2d       	mov	r31, r0
+			case 3: PORTD = 0b11001111; break;
+			case 4: PORTD = 0b00111111; break;			
+			default: PORTD = 0xFF;	
+ 126:	0f ef       	ldi	r16, 0xFF	; 255
+		LED7_OUT(push_button);
+		switch(push_button)
+		{
+			case 1: PORTD = 0b11111100; break;	
+			case 2: PORTD = 0b11110011; break;	
+			case 3: PORTD = 0b11001111; break;
+ 128:	1f ec       	ldi	r17, 0xCF	; 207
+			case 4: PORTD = 0b00111111; break;			
+ 12a:	df e3       	ldi	r29, 0x3F	; 63
+	{
+		push_button = PB_CHECK();
+		LED7_OUT(push_button);
+		switch(push_button)
+		{
+			case 1: PORTD = 0b11111100; break;	
+ 12c:	cc ef       	ldi	r28, 0xFC	; 252
+	PORTD |= 0xFF;
+	DDRC |= 0xFF;
+	PORTC |= 0xFF;
+	while(1)
+	{
+		push_button = PB_CHECK();
+ 12e:	0e 94 71 00 	call	0xe2	; 0xe2 <PB_CHECK>
+ 132:	80 93 60 00 	sts	0x0060, r24
+		LED7_OUT(push_button);
+ 136:	0e 94 53 00 	call	0xa6	; 0xa6 <LED7_OUT>
+		switch(push_button)
+ 13a:	80 91 60 00 	lds	r24, 0x0060
+ 13e:	82 30       	cpi	r24, 0x02	; 2
+ 140:	59 f0       	breq	.+22     	; 0x158 <PB_2_LED+0x4c>
+ 142:	18 f4       	brcc	.+6      	; 0x14a <PB_2_LED+0x3e>
+ 144:	81 30       	cpi	r24, 0x01	; 1
+ 146:	31 f0       	breq	.+12     	; 0x154 <PB_2_LED+0x48>
+ 148:	0d c0       	rjmp	.+26     	; 0x164 <PB_2_LED+0x58>
+ 14a:	83 30       	cpi	r24, 0x03	; 3
+ 14c:	39 f0       	breq	.+14     	; 0x15c <PB_2_LED+0x50>
+ 14e:	84 30       	cpi	r24, 0x04	; 4
+ 150:	39 f0       	breq	.+14     	; 0x160 <PB_2_LED+0x54>
+ 152:	08 c0       	rjmp	.+16     	; 0x164 <PB_2_LED+0x58>
+		{
+			case 1: PORTD = 0b11111100; break;	
+ 154:	c2 bb       	out	0x12, r28	; 18
+ 156:	eb cf       	rjmp	.-42     	; 0x12e <PB_2_LED+0x22>
+			case 2: PORTD = 0b11110011; break;	
+ 158:	f2 ba       	out	0x12, r15	; 18
+ 15a:	e9 cf       	rjmp	.-46     	; 0x12e <PB_2_LED+0x22>
+			case 3: PORTD = 0b11001111; break;
+ 15c:	12 bb       	out	0x12, r17	; 18
+ 15e:	e7 cf       	rjmp	.-50     	; 0x12e <PB_2_LED+0x22>
+			case 4: PORTD = 0b00111111; break;			
+ 160:	d2 bb       	out	0x12, r29	; 18
+ 162:	e5 cf       	rjmp	.-54     	; 0x12e <PB_2_LED+0x22>
+			default: PORTD = 0xFF;	
+ 164:	02 bb       	out	0x12, r16	; 18
+ 166:	e3 cf       	rjmp	.-58     	; 0x12e <PB_2_LED+0x22>
+
+00000168 <main>:
+
+int main(void)
+{	
+	//INIT();
+	//PORT();
+	PB_2_LED();
+ 168:	0e 94 86 00 	call	0x10c	; 0x10c <PB_2_LED>
+
+0000016c <__tablejump2__>:
+ 16c:	ee 0f       	add	r30, r30
+ 16e:	ff 1f       	adc	r31, r31
+
+00000170 <__tablejump__>:
+ 170:	05 90       	lpm	r0, Z+
+ 172:	f4 91       	lpm	r31, Z
+ 174:	e0 2d       	mov	r30, r0
+ 176:	09 94       	ijmp
+
+00000178 <_exit>:
+ 178:	f8 94       	cli
+
+0000017a <__stop_program>:
+ 17a:	ff cf       	rjmp	.-2      	; 0x17a <__stop_program>
