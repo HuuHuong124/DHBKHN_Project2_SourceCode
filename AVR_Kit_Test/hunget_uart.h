@@ -8,7 +8,11 @@
  * ......... Phien ban: ........................... danh rieng cho H/P DA2 ......... *
  * ................................................................................. *
  *************************************************************************************/
-
+ 
+/*************************************************************************************
+ * ...... Do bo thu vien thieu phan nhan du lieu UART nen minh da bo sung vao ...... *
+ * ..................... Doan Huu Huong 20166262 DienTu05 K61 ...................... *
+ *************************************************************************************/
 #ifndef _AVR_HUNGET_UART_H_
 #define _AVR_HUNGET_UART_H_
 
@@ -41,8 +45,8 @@ void UART_INIT(unsigned int uart_ubrr, unsigned char uart_size, unsigned char ua
 
 	// Cho phep modul truyen, nhan
 
-	UCSRB |= (1<<RXEN)|(1<<TXEN);
-
+	//UCSRB |= (1<<RXEN)|(1<<TXEN); //Thay viet cai nay
+	UCSRB |= (1<<RXEN)|(1<<TXEN)| (1<<RXCIE); // Thay bang cai nay kich hoat ngat khi nhan
 	// Dinh kich thuoc khung du lieu
 
 	UCSRB &= ~(1<<UCSZ2);
@@ -94,7 +98,12 @@ void UART_TRAN_STR(char *uart_str)
 		uart_str++;
 	}
 }
+// Day la ham nhan UART duoc viet them
 
+uint8_t USART_ReceiveByte(){
+  while((UCSRA &(1<<RXC)) == 0);
+  return UDR;
+}
 // Ket thuc cac function
 
 #endif

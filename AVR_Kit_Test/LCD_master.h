@@ -1,9 +1,16 @@
+
 /*************************************************************************************/
 /**************** Thu vien cua thay ko chay thi tham khao cai nay ********************/
 /*********************** Doan Huu Huong 20166262 DTVT05 K61 **************************/
 /*************************************************************************************/
 //Tham khoa tai: https://www.electronicwings.com/avr-atmega/lcd16x2-interfacing-with-atmega16-32
-
+/*
+ * LCD_master
+ *
+ * Created: 13/6/2020 11:21:54 PM
+ * Author: Doan Huu Huong 20166262
+ *         Dien tu 05 K61
+ */ 
 
 #ifndef LCD_MASTER_H_
 #define LCD_MASTER_H_

@@ -9,7 +9,9 @@
 
 #ifndef THU_VIEN_RIENG_H_
 #define THU_VIEN_RIENG_H_
+uint8_t pre =8; // xung nhip bang 8MHz
 #include <util/delay.h>
+#include <avr/interrupt.h>
 void INIT();
 void PORT();
 void LED7_OUT(uint8_t num);
@@ -20,6 +22,7 @@ uint8_t PB_CHECK();
 void ADC_2_LCD();
 void UART();
 void LCD4_DIS_SHIFT(unsigned char lcd4_direct, unsigned char lcd4_step);
+
 void INIT()
 {
 	//Khoi tao trang thai output cho cac chan noi toi cac led don
@@ -82,15 +85,17 @@ void LED7_OUT(uint8_t num)
 	}
 	PORTC = temp;
 }
-void delay_ms(unsigned int count)
+
+void delay_ms(unsigned int count) // Ham delay nay toi viet lai
 {
 	unsigned int i;
+	count = pre*count; // pre = 8 do PRE 8MHz
 	for(i=0;i<count;i++){
-		_delay_ms(8);
+		_delay_ms(1);
 	}
 }
 
-void DELAY_MS(unsigned int mili_count)// Ham delay nay ko chay
+void DELAY_MS(unsigned int mili_count)// Ham delay nay cua thay ko chay
 {
 	unsigned int i,j;
 	mili_count = mili_count * FRE;
@@ -177,7 +182,7 @@ void UART()
 	PORTD &= ~(1<<PD5);
 	PORTC |= 0x0F;
 	
-	LCD_Init();			/* Initialize LCD */
+	LCD_Init();			/* Khoi tao LCD */
 	LCD_Clear();
 	LCD_Command(0x80);
 	LCD_String("Huu Huong, 20166262, DT05-k61");
@@ -214,12 +219,116 @@ void LCD4_DIS_SHIFT(unsigned char lcd4_direct, unsigned char lcd4_step)
 		for(i = 0; i< lcd4_step; i++)
 			LCD4_OUT_CMD(0x18);
 }
+// ham chay chu LCD duoc viet Lai
 void LCD_SHIFT(unsigned char shift)
 {
 	unsigned char  i;
 	for(i=0;i<shift;i++)
 	{
-		LCD_Command(0x1c);/* shift entire display right */
+		LCD_Command(0x1c);/* dich LCD */
 	}	
 }
+
+// Bai tap luyen tap cuoi ki, doc cam bien bui min SDS011 hien thi ra LCD va UART
+// SDS011 la cam bien do bui PM2.5 va PM10, giao thuc ket noi la UART 9600
+// Vi ATmega16 chi co 1 UART nen toi chia ra Rx de doc cam bien, Tx de gui du lieu di
+void get_SDS011()
+{
+	UART_INIT(51, 8, 0 ,1);
+	char sdsPm25;
+	char sdsPm10;
+	uint8_t UARTprint[30];
+	LCD_Init();			
+	LCD_Clear();
+	LCD_Command(0x80);
+	LCD_String("Pm2.5 = ---- ug");
+	LCD_Command(0xC0);
+	LCD_String("Pm 10 = ---- ug");
+	while(1)
+	{
+		//UART_TRAN_STR("-------Lay du lieu------  ");
+		uint8_t sdsData = 0;
+		uint8_t i = 0;
+		uint8_t sdsDust[10] = {0};
+		uint8_t sdsChecksum = 0;
+		while ((UCSRA &(1<<RXC)) != 0)
+		{
+			sdsData = UDR;
+			delay_ms(2);// d?i l?y d? li?u
+			if(sdsData == 0xAA) //head1 ok
+			{
+				sdsDust[0] =  sdsData;
+				sdsData = UDR;
+				if(sdsData == 0xc0)//head2 ok
+				{
+					sdsDust[1] =  sdsData;
+					sdsChecksum = 0;
+					for(i=0;i < 6;i++)//lay data
+					{
+						sdsDust[i+2] = USART_ReceiveByte();
+						sdsChecksum += sdsDust[i+2];
+					}
+					sdsDust[8] = USART_ReceiveByte();
+					sdsDust[9] = USART_ReceiveByte();
+					
+					//debug du lieu nhan duoc
+					/*
+					sprintf(UARTprint,"%5x",sdsDust[0]);
+					UART_TRAN_STR(UARTprint);
+					sprintf(UARTprint,"%5x",sdsDust[1]);
+					UART_TRAN_STR(UARTprint);
+					sprintf(UARTprint,"%5x",sdsDust[2]);
+					UART_TRAN_STR(UARTprint);
+					sprintf(UARTprint,"%5x",sdsDust[3]);
+					UART_TRAN_STR(UARTprint);
+					sprintf(UARTprint,"%5x",sdsDust[4]);
+					UART_TRAN_STR(UARTprint);
+					sprintf(UARTprint,"%5x",sdsDust[5]);
+					UART_TRAN_STR(UARTprint);
+					sprintf(UARTprint,"%5x",sdsDust[6]);
+					UART_TRAN_STR(UARTprint);
+					sprintf(UARTprint,"%5x",sdsDust[7]);
+					UART_TRAN_STR(UARTprint);
+					sprintf(UARTprint,"%5x",sdsDust[8]);
+					UART_TRAN_STR(UARTprint);	
+					sprintf(UARTprint,"%5x",sdsDust[9]);
+					UART_TRAN_STR(UARTprint);
+					UART_TRAN_BYTE(13);
+					UART_TRAN_BYTE(10);
+					sprintf(UARTprint,"%5x",sdsChecksum);
+					UART_TRAN_STR(UARTprint);
+					UART_TRAN_BYTE(13);
+					UART_TRAN_BYTE(10);
+					*/
+					if(sdsChecksum == sdsDust[8])  //ok
+					{
+						sdsPm25 = (sdsDust[3]*256 + sdsDust[2])/10;
+						sdsPm10 = (sdsDust[5]*256 + sdsDust[4])/10;
+						
+						// hien thi ra UART
+						sprintf(UARTprint,"%4d",sdsPm25);
+						UART_TRAN_STR("Pm2.5 = ");
+						UART_TRAN_STR(UARTprint);
+						UART_TRAN_BYTE(13);
+						UART_TRAN_BYTE(10);
+						// hien thi ra LCD
+						LCD_Command(0x88);
+						LCD_String(UARTprint);
+						
+						sprintf(UARTprint,"%4d",sdsPm10);
+						UART_TRAN_STR("Pm10  = ");
+						UART_TRAN_STR(UARTprint);
+						UART_TRAN_BYTE(13);
+						UART_TRAN_BYTE(10);
+						LCD_Command(0xC8);
+						LCD_String(UARTprint);
+						delay_ms(1000);
+					}
+				}
+			}
+		}
+	}
+}
+
+
 #endif /* THU_VIEN_RIENG_H_ */
